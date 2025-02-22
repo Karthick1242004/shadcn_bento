@@ -1,9 +1,11 @@
 "use client"
 import { Slider } from "@/components/ui/slider"
-import { useEffect, useRef } from "react"
 
 interface FrameComponentProps {
-  video: string
+  image: string
+  content: string
+  demoLink?: string
+  githubLink?: string
   width: number | string
   height: number | string
   className?: string
@@ -19,13 +21,15 @@ interface FrameComponentProps {
   showControls: boolean
   label: string
   showFrame: boolean
-  autoplayMode: "all" | "hover"
   isHovered: boolean
   onClick: () => void
 }
 
 export function FrameComponent({
-  video,
+  image,
+  content,
+  demoLink,
+  githubLink,
   width,
   height,
   className = "",
@@ -41,24 +45,9 @@ export function FrameComponent({
   showControls,
   label,
   showFrame,
-  autoplayMode,
   isHovered,
   onClick,
 }: FrameComponentProps) {
-  const videoRef = useRef<HTMLVideoElement>(null)
-
-  useEffect(() => {
-    if (autoplayMode === "all") {
-      videoRef.current?.play()
-    } else if (autoplayMode === "hover") {
-      if (isHovered) {
-        videoRef.current?.play()
-      } else {
-        videoRef.current?.pause()
-      }
-    }
-  }, [isHovered, autoplayMode])
-
   return (
     <div
       className={`relative ${className}`}
@@ -70,7 +59,7 @@ export function FrameComponent({
       onClick={onClick}
     >
       <div className="relative w-full h-full overflow-hidden">
-        {/* Video with Border */}
+        {/* Image with Border */}
         <div
           className="absolute inset-0 flex items-center justify-center"
           style={{
@@ -91,24 +80,10 @@ export function FrameComponent({
               transition: "transform 0.3s ease-in-out",
             }}
           >
-            <video
+            <img
               className="w-full h-full object-cover"
-              src={video}
-              loop
-              muted
-              playsInline
-              autoPlay={autoplayMode === "all" || (autoplayMode === "hover" && isHovered)}
-              ref={videoRef}
-              onMouseEnter={(e) => {
-                if (autoplayMode === "hover") {
-                  e.currentTarget.play()
-                }
-              }}
-              onMouseLeave={(e) => {
-                if (autoplayMode === "hover") {
-                  e.currentTarget.pause()
-                }
-              }}
+              src={image}
+              alt={label}
             />
           </div>
         </div>

@@ -5,14 +5,17 @@ import { motion } from "framer-motion"
 import { FrameComponent } from "./FrameComponent"
 import { Slider } from "@/components/ui/slider"
 import { Button } from "@/components/ui/button"
-import VideoPopup from "./VideoPopup"
+import ProjectPopup from "./VideoPopup"
 
 const GRID_SIZE = 12
 const CELL_SIZE = 60 // pixels per grid cell
 
 interface Frame {
   id: number
-  video: string
+  image: string
+  content: string
+  demoLink?: string
+  githubLink?: string
   defaultPos: { x: number; y: number; w: number; h: number }
   corner: string
   edgeHorizontal: string
@@ -20,14 +23,16 @@ interface Frame {
   mediaSize: number
   borderThickness: number
   borderSize: number
-  autoplayMode: "all" | "hover"
   isHovered: boolean
 }
 
 const initialFrames: Frame[] = [
   {
     id: 1,
-    video: "https://static.cdn-luma.com/files/981e483f71aa764b/Company%20Thing%20Exported.mp4",
+    image: "https://karthickrajans.vercel.app/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Ffolio.312f0ad8.png&w=2048&q=75",
+    content: "Folio Lynkr is a platform that allows you to create a portfolio website in minutes. As a user you can select a template which suits you the best and then fill out the form which asks for the details you want to add in your portfolio then pay and host your portfolio website on our platform itself",
+    demoLink: "https://demo.example.com",
+    githubLink: "https://github.com/yourusername/project",
     defaultPos: { x: 0, y: 0, w: 4, h: 4 },
     corner: "https://static.cdn-luma.com/files/bcf576df9c38b05f/1_corner_update.png",
     edgeHorizontal: "https://static.cdn-luma.com/files/bcf576df9c38b05f/1_vert_update.png",
@@ -35,12 +40,14 @@ const initialFrames: Frame[] = [
     mediaSize: 1,
     borderThickness: 0,
     borderSize: 80,
-    autoplayMode: "all",
     isHovered: false,
   },
   {
     id: 2,
-    video: "https://static.cdn-luma.com/files/58ab7363888153e3/WebGL%20Exported%20(1).mp4",
+    image: "https://karthickrajans.vercel.app/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fcalibervercel.efea96e4.png&w=2048&q=75",
+    content: "Caliber Tech is a web based startup which provides web pages for small shops and vendors in affordable price with unaffordable quality. Here the user can also buy source codes for the websites which are already developed and hosted on Folio Lynkr",
+    demoLink: "https://demo.example.com",
+    githubLink: "https://github.com/yourusername/project",
     defaultPos: { x: 4, y: 0, w: 4, h: 4 },
     corner: "https://static.cdn-luma.com/files/bcf576df9c38b05f/2_corner_update.png",
     edgeHorizontal: "https://static.cdn-luma.com/files/bcf576df9c38b05f/2_vert_update.png",
@@ -48,12 +55,14 @@ const initialFrames: Frame[] = [
     mediaSize: 1,
     borderThickness: 0,
     borderSize: 80,
-    autoplayMode: "all",
     isHovered: false,
   },
   {
     id: 3,
-    video: "https://static.cdn-luma.com/files/58ab7363888153e3/Jitter%20Exported%20Poster.mp4",
+    image: "https://karthickrajans.vercel.app/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fmac-os.8db8b292.png&w=2048&q=75",
+    content: "This is a portfolio template which is completley developed based on macOS used in macbook, a dynamic website which consist of main macos features like login,shutdown, terminal, browser, VS-Code, Notes App, Safari,Control Center etc, this even has its app listed as projects done. This project challenged the CSS skills of mine and knowledge.",
+    demoLink: "https://demo.example.com",
+    githubLink: "https://github.com/yourusername/project",
     defaultPos: { x: 8, y: 0, w: 4, h: 4 },
     corner: "https://static.cdn-luma.com/files/3d36d1e0dba2476c/3_Corner_update.png",
     edgeHorizontal: "https://static.cdn-luma.com/files/3d36d1e0dba2476c/3_hori_update.png",
@@ -61,12 +70,14 @@ const initialFrames: Frame[] = [
     mediaSize: 1,
     borderThickness: 0,
     borderSize: 80,
-    autoplayMode: "all",
     isHovered: false,
   },
   {
     id: 4,
-    video: "https://static.cdn-luma.com/files/58ab7363888153e3/Exported%20Web%20Video.mp4",
+    image: "https://karthickrajans.vercel.app/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fnetflix.4be6be86.png&w=2048&q=75",
+    content: "This Netflix website clone was developed as a comprehensive project aimed at honing skills in API fetching, posting data, rendering components across various pages, and implementing backend APIs for handling email and password data using MongoDB with Node and Express. It gave valuable insights into managing states and utilizing hooks effectively.",
+    demoLink: "https://demo.example.com",
+    githubLink: "https://github.com/yourusername/project",
     defaultPos: { x: 0, y: 4, w: 4, h: 4 },
     corner: "https://static.cdn-luma.com/files/9e67e05f37e52522/4_corner_update.png",
     edgeHorizontal: "https://static.cdn-luma.com/files/9e67e05f37e52522/4_hori_update.png",
@@ -74,12 +85,14 @@ const initialFrames: Frame[] = [
     mediaSize: 1,
     borderThickness: 0,
     borderSize: 80,
-    autoplayMode: "all",
     isHovered: false,
   },
   {
     id: 5,
-    video: "https://static.cdn-luma.com/files/58ab7363888153e3/Logo%20Exported.mp4",
+    image: "https://karthickrajans.vercel.app/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fgemini.6436c8af.png&w=2048&q=75",
+    content: "We developed a REACT website that utilizes GEMINI AI to provide details about the latest disease outbreaks worldwide. Since GEMINI AI doesn't provide real-time data, we integrated updated news from the W.H.O. website to fetch disease details. It gave valuable insights into using API and utilizing AI in real-world problems effectively.",
+    demoLink: "https://demo.example.com",
+    githubLink: "https://github.com/yourusername/project",
     defaultPos: { x: 4, y: 4, w: 4, h: 4 },
     corner: "https://static.cdn-luma.com/files/9e67e05f37e52522/5_corner_update.png",
     edgeHorizontal: "https://static.cdn-luma.com/files/9e67e05f37e52522/5_hori_update.png",
@@ -87,12 +100,14 @@ const initialFrames: Frame[] = [
     mediaSize: 1,
     borderThickness: 0,
     borderSize: 80,
-    autoplayMode: "all",
     isHovered: false,
   },
   {
     id: 6,
-    video: "https://static.cdn-luma.com/files/58ab7363888153e3/Animation%20Exported%20(4).mp4",
+    image: "https://karthickrajans.vercel.app/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fcog.c3fd26a9.png&w=2048&q=75",
+    content: "As a part of Web-App event conducted by 'EHORYZON2024' we developed a Vehicle Management System for our college vehicles with a feature of notifying the drivers and VMS admin about next service date via SMS. This application utilizes a public API called Twilio to send messages to the mentioned drivers via our website. We got 3rd prize.",
+    demoLink: "https://demo.example.com",
+    githubLink: "https://github.com/yourusername/project",
     defaultPos: { x: 8, y: 4, w: 4, h: 4 },
     corner: "https://static.cdn-luma.com/files/1199340587e8da1d/6_corner.png",
     edgeHorizontal: "https://static.cdn-luma.com/files/1199340587e8da1d/6_corner-1.png",
@@ -100,12 +115,14 @@ const initialFrames: Frame[] = [
     mediaSize: 1,
     borderThickness: 0,
     borderSize: 80,
-    autoplayMode: "all",
     isHovered: false,
   },
   {
     id: 7,
-    video: "https://static.cdn-luma.com/files/58ab7363888153e3/Illustration%20Exported%20(1).mp4",
+    image: "https://karthickrajans.vercel.app/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Frobooo.0ad53c0c.png&w=2048&q=75",
+    content: "This is a prototype showcasing my first integration of a 3D model in NextJS. Utilizing Blender, Spline, and Three.js, I successfully brought a 3D immersive robot into the web platform. This project provided valuable hands-on experience with Blender and Spline, while Three.js enhanced my understanding of orbit control and scene management.",
+    demoLink: "https://demo.example.com",
+    githubLink: "https://github.com/yourusername/project",
     defaultPos: { x: 0, y: 8, w: 4, h: 4 },
     corner: "https://static.cdn-luma.com/files/b80b5aa00ccc33bd/7_corner.png",
     edgeHorizontal: "https://static.cdn-luma.com/files/b80b5aa00ccc33bd/7_hori.png",
@@ -113,12 +130,14 @@ const initialFrames: Frame[] = [
     mediaSize: 1,
     borderThickness: 0,
     borderSize: 80,
-    autoplayMode: "all",
     isHovered: false,
   },
   {
     id: 8,
-    video: "https://static.cdn-luma.com/files/58ab7363888153e3/Art%20Direction%20Exported.mp4",
+    image: "https://karthickrajans.vercel.app/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fportfolio.46875801.png&w=2048&q=75",
+    content: "This is a prototype showcasing my first integration of a 3D model in ReactJS. Utilizing Blender, Spline, and Three.js, I successfully brought a 3D immersive game world to the web platform. This project provided valuable hands-on experience with Blender and Spline, while Three.js enhanced my understanding of orbit control and scene management.",
+    demoLink: "https://demo.example.com",
+    githubLink: "https://github.com/yourusername/project",
     defaultPos: { x: 4, y: 8, w: 4, h: 4 },
     corner: "https://static.cdn-luma.com/files/981e483f71aa764b/8_corner.png",
     edgeHorizontal: "https://static.cdn-luma.com/files/981e483f71aa764b/8_hori.png",
@@ -126,12 +145,14 @@ const initialFrames: Frame[] = [
     mediaSize: 1,
     borderThickness: 0,
     borderSize: 80,
-    autoplayMode: "all",
     isHovered: false,
   },
   {
     id: 9,
-    video: "https://static.cdn-luma.com/files/58ab7363888153e3/Product%20Video.mp4",
+    image: "https://karthickrajans.vercel.app/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Finsta.aa8bee74.png&w=2048&q=75",
+    content: "This is an Instagram clone created using the NEXT JS framework. This is my first project in NEXT JS. It is just a complete frontend clone of Instagram. It gave a brief knowledge about the NEXT JS project structure, routing, and rendering components across pages. It was a great experience in frontend development.",
+    demoLink: "https://demo.example.com",
+    githubLink: "https://github.com/yourusername/project",
     defaultPos: { x: 8, y: 8, w: 4, h: 4 },
     corner: "https://static.cdn-luma.com/files/981e483f71aa764b/9_corner.png",
     edgeHorizontal: "https://static.cdn-luma.com/files/981e483f71aa764b/9_hori.png",
@@ -139,7 +160,6 @@ const initialFrames: Frame[] = [
     mediaSize: 1,
     borderThickness: 0,
     borderSize: 80,
-    autoplayMode: "all",
     isHovered: false,
   },
 ]
@@ -151,7 +171,7 @@ export default function DynamicFrameLayout() {
   const [gapSize, setGapSize] = useState(4)
   const [showControls, setShowControls] = useState(false)
   const [cleanInterface, setCleanInterface] = useState(true)
-  const [selectedVideo, setSelectedVideo] = useState<string | null>(null)
+  const [selectedProject, setSelectedProject] = useState<Frame | null>(null)
 
   const getRowSizes = () => {
     if (hovered === null) {
@@ -201,16 +221,17 @@ export default function DynamicFrameLayout() {
     // For now, we'll just log the values
   }
 
-  const handleVideoClick = (video: string) => {
-    setSelectedVideo(video)
+  const handleProjectClick = (frame: Frame) => {
+    setSelectedProject(frame)
   }
 
   const closePopup = () => {
-    setSelectedVideo(null)
+    setSelectedProject(null)
   }
 
   return (
-    <div className="space-y-4 w-full h-full">
+    <div className="w-full h-full">
+      <h1 className="text-2xl">My Works <span className="text-sm text-slate-500 font-bold">( Click to see in detail )</span></h1>
       <div className="flex justify-between items-center mb-4"></div>
       {!cleanInterface && (
         <div className="flex justify-between items-center">
@@ -279,7 +300,10 @@ export default function DynamicFrameLayout() {
               onMouseLeave={() => setHovered(null)}
             >
               <FrameComponent
-                video={frame.video}
+                image={frame.image}
+                content={frame.content}
+                demoLink={frame.demoLink}
+                githubLink={frame.githubLink}
                 width="100%"
                 height="100%"
                 className="absolute inset-0 cursor-pointer"
@@ -295,18 +319,25 @@ export default function DynamicFrameLayout() {
                 showControls={false}
                 label={`Frame ${frame.id}`}
                 showFrame={false}
-                autoplayMode="all"
                 isHovered={
                   hovered?.row === Math.floor(frame.defaultPos.y / 4) &&
                   hovered?.col === Math.floor(frame.defaultPos.x / 4)
                 }
-                onClick={() => handleVideoClick(frame.video)}
+                onClick={() => handleProjectClick(frame)}
               />
             </motion.div>
           )
         })}
       </div>
-      {selectedVideo && <VideoPopup video={selectedVideo} onClose={closePopup} />}
+      {selectedProject && (
+        <ProjectPopup
+          image={selectedProject.image}
+          content={selectedProject.content}
+          demoLink={selectedProject.demoLink}
+          githubLink={selectedProject.githubLink}
+          onClose={closePopup}
+        />
+      )}
     </div>
   )
 }

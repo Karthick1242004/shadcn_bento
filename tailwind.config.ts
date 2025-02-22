@@ -91,6 +91,14 @@ const config: Config = {
   		}
   	}
   },
+  screens: {
+	max420: {
+		max: '420px'
+	},
+	max500: {
+		max: '500px'
+	},
+},
   plugins: [require("tailwindcss-animate")],
 };
 export default config;
