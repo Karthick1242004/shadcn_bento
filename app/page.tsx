@@ -1,7 +1,8 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import DynamicFrameLayout from "../components/DynamicFrameLayout"
+import Loader from "../components/Loader/Loader"
 import { ppEditorialNewUltralightItalic, inter } from "./fonts"
 import Image from "next/image"
 import Link from "next/link"
@@ -11,9 +12,22 @@ export default function Home() {
   const { data, loading, error } = usePortfolioData()
   const [headerSize] = useState(1.2) // 120% is the default size
   const [textSize] = useState(0.8) // 80% is the default size
+  const [showLoader, setShowLoader] = useState(true)
 
-  if (loading) {
-    return <div>Loading...</div>
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowLoader(false)
+    }, 3000) // 3 seconds timer
+
+    return () => clearTimeout(timer) // Cleanup timer on unmount
+  }, [])
+
+  if (loading || showLoader) {
+    return (
+       <div className="min-h-screen  flex items-center justify-center">
+       <Loader /> 
+       </div>  
+  )
   }
 
   if (error) {
